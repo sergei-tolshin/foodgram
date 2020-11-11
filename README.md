@@ -33,12 +33,12 @@ sudo apt-get install docker-compose
 Клонируйте репозиторий приложения из git:
 
 ```
-git clone https://github.com/sergei-tolshin/foodgram-project.git yamdb
+git clone https://github.com/sergei-tolshin/foodgram-project.git foodgram
 ```
 Перейдите в каталог приложения:
 
 ```
-cd yamdb
+cd foodgram
 ```
 
 Создайте файл .env и добавьте в него переменные окружения для базы данных:
@@ -66,15 +66,15 @@ sudo docker-compose up -d
 
 Собираем статические файлы приложения:
 ```
-sudo docker exec -it yamdb_web_1 python manage.py collectstatic --no-input
+sudo docker exec -it foodgram_web_1 python manage.py collectstatic --no-input
 ```
 Заполняем базу начальными данными:
 ```
-sudo docker exec -it yamdb_web_1 python manage.py loaddata fixtures.json
+sudo docker exec -it foodgram_web_1 python manage.py loaddata fixtures.json
 ```
 Создаем суперпользователя:
 ```
-sudo docker exec -it yamdb_web_1 python manage.py createsuperuser
+sudo docker exec -it foodgram_web_1 python manage.py createsuperuser
 ```
 
 ### Проверка работы
