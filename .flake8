@@ -1,3 +1,3 @@
 [flake8]
-ignore = F401
+ignore = F401, W503
 exclude = tests, migrations, settings.py, urls.py
