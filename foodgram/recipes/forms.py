@@ -40,9 +40,9 @@ class RecipeForm(forms.ModelForm):
         self.fields['dinner'] = forms.BooleanField(
             required=False, initial='dinner' in self.instance.tags)
         for field_name in self.data:
-            if (field_name.startswith('nameIngredient_') or
-                field_name.startswith('valueIngredient_') or
-                    field_name.startswith('unitsIngredient_')):
+            if (field_name.startswith('nameIngredient_')
+                or field_name.startswith('valueIngredient_')
+                    or field_name.startswith('unitsIngredient_')):
                 self.fields[field_name] = forms.CharField(
                     required=False, widget=forms.HiddenInput())
 

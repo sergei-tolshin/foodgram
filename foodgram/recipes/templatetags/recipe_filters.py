@@ -42,7 +42,7 @@ def add_query_params(request, **kwargs):
         else:
             updated.pop(k)
 
-    return request.build_absolute_uri('?'+updated.urlencode())
+    return request.build_absolute_uri('?' + updated.urlencode())
 
 
 # проверка рецепта в списке покупок

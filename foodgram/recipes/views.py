@@ -251,21 +251,21 @@ def purchases_to_pdf(request):
     pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))
     p = canvas.Canvas(buffer, pagesize=A4)
     p.setFont('Arial', 16, leading=None)
-    p.drawString(10*mm, 277*mm, 'Список покупок')
-    p.line(10*mm, 272*mm, 200*mm, 272*mm)
+    p.drawString(10 * mm, 277 * mm, 'Список покупок')
+    p.line(10 * mm, 272 * mm, 200 * mm, 272 * mm)
 
-    y = 267*mm
+    y = 267 * mm
     for i, item in enumerate(ingredients, 1):
         p.setFont('Arial', 14, leading=None)
         p.drawString(
-            20*mm, y-5*mm,
+            20 * mm, y - 5 * mm,
             f'{i}. {item["name"]} - {item["value__sum"]} {item["units"]}')
-        y = y-8*mm
+        y = y - 8 * mm
 
-    p.line(10*mm, 10*mm, 200*mm, 10*mm)
+    p.line(10 * mm, 10 * mm, 200 * mm, 10 * mm)
     p.setFont('Arial', 10, leading=None)
-    p.drawString(10*mm, 5*mm, today)
-    p.drawRightString(200*mm, 5*mm, 'Продуктовый помощник')
+    p.drawString(10 * mm, 5 * mm, today)
+    p.drawRightString(200 * mm, 5 * mm, 'Продуктовый помощник')
 
     p.setTitle(f'Список покупок от {today}')
     p.showPage()
