@@ -1,0 +1,29 @@
+{% load recipe_filters %}
+<nav class="pagination" aria-label="Search results pages">
+        <ul class="pagination__container">
+                {% if items.has_previous %}
+                <li class="pagination__item"><a class="pagination__link link"
+                                href="{% add_query_params request page=items.previous_page_number %}"><span
+                                        class="icon-left"></span></a></li>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                {% if items.number|add:-6 < i and i < items.number|add:6 %}
+                {% if items.number == forloop.counter %}
+                <li class="pagination__item pagination__item_active"><span
+                                class="pagination__link link">{{forloop.counter}}</span>
+                </li>
+                {% else %}
+                <li class="pagination__item"><a class="pagination__link link"
+                                href="{% add_query_params request page=forloop.counter %}">{{forloop.counter}}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% if items.has_next %}
+                <li class="pagination__item"><a class="pagination__link link"
+                                href="{% add_query_params request page=items.next_page_number %}"><span
+                                        class="icon-right"></span></a></li>
+                {% endif %}
+        </ul>
+</nav>

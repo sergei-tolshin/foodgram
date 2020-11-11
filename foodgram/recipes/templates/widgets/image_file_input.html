@@ -1,0 +1,12 @@
+<label for="id_image" class="form__file-button">Выбрать файл</label>
+<div class="form__field-item-ingredient">
+    <span id="image__name"></span>
+</div>
+{% if widget.is_initial %}
+<div class="form__field-item-ingredient">
+    <span id="image__name">
+        {{ widget.initial_text }}: <a href="{{ widget.value.url }}" target="_blank">{{ widget.value }}</a>
+    </span><br>
+</div>
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %}>

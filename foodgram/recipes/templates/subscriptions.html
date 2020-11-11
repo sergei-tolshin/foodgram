@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Мои подписки{% endblock %}
+
+{% block nav %}
+{% include 'nav.html' with subscriptions=True %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/myFollow.css' %}">
+{% endblock %}
+
+{% block scripts_js %}
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/MyFollow.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'js/pages/myFollow.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="main__header">
+    <h1 class="main__title">Мои подписки</h1>
+</div>
+<div class="card-list">
+    {% for subscription in page %}
+    {% include 'author_item.html' with author=subscription.author %}
+    {% empty %}
+    <h3 class="card-user__title">Тут пока пусто...</h3>
+    {% endfor %}
+</div>
+
+<!-- Вывод паджинатора -->
+{% if page.has_other_pages %}
+{% include 'paginator.html' with items=page paginator=paginator%}
+{% endif %}
+
+{% endblock %}

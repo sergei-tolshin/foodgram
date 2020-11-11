@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ошибка 404{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/form.css' %}">
+{% endblock %}
+
+{% block scripts_js %}
+{% endblock %}
+
+{% block content %}
+
+<div class="main__header">
+    <h1 class="main__title">Ошибка 404</h1>
+</div>
+<div class="form-container">
+    <div class="form" method="post">
+        <p class="form__info-text">Страница, которую вы ищете, возможно, была удалена, ее название было изменено, или
+            она временно недоступна</p>
+        <p class="form__info-text"><a href="/" class="button button_style_blue">Вернуться на главную</a></p>
+    </div>
+</div>
+
+{% endblock %}

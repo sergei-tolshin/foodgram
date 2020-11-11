@@ -1,0 +1,37 @@
+{% load recipe_filters %}
+<nav class="nav">
+        <div class="nav__container container">
+                <ul class="nav__items list">
+                        <li class="nav__item {% if index %}nav__item_active{% endif %}"><a href="{% url 'index' %}"
+                                        class="nav__link link">Рецепты</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="nav__item {% if subscriptions %}nav__item_active{% endif %}"><a
+                                        href="{% url 'subscriptions' %}" class="nav__link link">Мои
+                                        подписки</a></li>
+                        <li class="nav__item {% if new_recipe %}nav__item_active{% endif %}"><a
+                                        href="{% url 'new_recipe' %}" class="nav__link link">Создать
+                                        рецепт</a></li>
+                        <li class="nav__item {% if favorites %}nav__item_active{% endif %}"><a
+                                        href="{% url 'favorites' %}" class="nav__link link">Избранное</a></li>
+                        {% endif %}
+                        <li class="nav__item {% if purchases %}nav__item_active{% endif %}"><a
+                                        href="{% url 'purchases' %}" class="nav__link link">Список покупок
+                                        <span class="badge badge_style_blue nav__badge"
+                                                id="counter">{% purchase_counter request %}</span></a></li>
+                </ul>
+                <ul class="nav__items list">
+                        {% if user.is_authenticated %}
+                        <li class="nav__item {% if password_change %}nav__item_active{% endif %}"><a
+                                        href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a>
+                        </li>
+                        <li class="nav__item"><a href="{% url 'logout' %}?next={{ request.path|urlencode }}"
+                                        class="nav__link link">Выход</a></li>
+                        {% else %}
+                        <li class="nav__item"><a href="{% url 'login' %}?next={{ request.path|urlencode }}"
+                                        class="nav__link link">Войти</a></li>
+                        <li class="nav__item"><a href="{% url 'signup' %}" class="button button_style_blue">Создать
+                                        аккаунт</a></li>
+                        {% endif %}
+                </ul>
+        </div>
+</nav>

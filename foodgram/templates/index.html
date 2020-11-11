@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Рецепты{% endblock %}
+
+{% block nav %}
+{% include 'nav.html' with index=True %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/index.css' %}">
+{% endblock %}
+
+{% block scripts_js %}
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+{% if user.is_authenticated %}
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+{% endif %}
+
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/CardList.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+
+<script src="{% static 'js/api/Api.js' %}"></script>
+{% if user.is_authenticated %}
+<script src="{% static 'js/pages/indexAuth.js' %}"></script>
+{% else %}
+<script src="{% static 'js/pages/indexNotAuth.js' %}"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="main__header">
+    <h1 class="main__title">Рецепты</h1>
+    <!-- Вывод фильтра по тегам -->
+    {% include 'tag_filter.html' with breakfast=breakfast lunch=lunch dinner=dinner%}
+</div>
+<div class="card-list">
+    {% for recipe in page %}
+    {% include 'recipe_item.html' with recipe=recipe %}
+    {% endfor %}
+</div>
+
+<!-- Вывод паджинатора -->
+{% if page.has_other_pages %}
+{% include 'paginator.html' with items=page paginator=paginator%}
+{% endif %}
+
+{% endblock %}

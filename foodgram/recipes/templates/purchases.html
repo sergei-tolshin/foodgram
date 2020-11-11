@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Список покупок{% endblock %}
+
+{% block nav %}
+{% include 'nav.html' with purchases=True %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/shopList.css' %}">
+{% endblock %}
+
+{% block scripts_js %}
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/components/ShopList.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'js/pages/shopList.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="main__header">
+    <h1 class="main__title">Список покупок</h1>
+</div>
+<div class="card-list card-list_column">
+    <ul class="shopping-list">
+        {% for recipe in recipes %}
+        <li class="shopping-list__item" data-id="{{ recipe.id }}">
+            <div class="recipe recipe_reverse">
+                {% load thumbnail %}
+                {% thumbnail recipe.image "72x72" crop="center" upscale=True as im %}
+                <img class="recipe__image recipe__image_big" src="{{ im.url }}" alt="{{ recipe.title }}" />
+                {% endthumbnail %}
+                <h3 class="recipe__title">
+                    <a class="recipe__title link" href="{% url 'recipe' recipe.slug recipe.id %}" target="_blank">
+                        {{ recipe.title }}
+                    </a>
+                </h3>
+                <p class="recipe__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
+            </div>
+            <button class="shopping-list__button button button_style_none">Удалить</button>
+        </li>
+        {% empty %}
+        <h3 class="recipe__title">Тут пока пусто...</h3>
+        {% endfor %}
+    </ul>
+
+    {% if recipes %}
+    <a href="{% url 'download' %}">
+        <button class="button button_style_blue">Скачать список</button>
+    </a>
+    {% endif %}
+</div>
+{% endblock %}

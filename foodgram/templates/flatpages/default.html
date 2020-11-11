@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ flatpage.title }} {% endblock %}
+
+{% block nav %}
+{% include 'nav.html' with index=True %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/index.css' %}">
+{% endblock %}
+
+{% block scripts_js %}
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+
+<script src="{% static 'js/components/Purchases.js' %}"></script>
+{% if user.is_authenticated %}
+<script src="{% static 'js/components/Favorites.js' %}"></script>
+{% endif %}
+
+<script src="{% static 'js/config/config.js' %}"></script>
+<script src="{% static 'js/components/CardList.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+
+<script src="{% static 'js/api/Api.js' %}"></script>
+{% if user.is_authenticated %}
+<script src="{% static 'js/pages/indexAuth.js' %}"></script>
+{% else %}
+<script src="{% static 'js/pages/indexNotAuth.js' %}"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="main__header">
+    <h1 class="main__title">{{ flatpage.title }}</h1>
+</div>
+<div>
+    {{ flatpage.content }}
+</div>
+
+{% endblock %}

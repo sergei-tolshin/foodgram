@@ -1,0 +1,15 @@
+{
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "editor.formatOnSave": true,
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django"
+    ],
+    "editor.rulers": [
+        80
+    ],
+    "editor.renderWhitespace": "boundary",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+}

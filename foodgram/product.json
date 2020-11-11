@@ -1,0 +1,1 @@
+[{"model": "recipes.product", "pk": 1, "fields": {"title": "абрикосовый джем", "dimension": "г"}}, {"model": "recipes.product", "pk": 2, "fields": {"title": "абрикосовый сок", "dimension": "стакан"}}]
