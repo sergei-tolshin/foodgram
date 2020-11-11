@@ -16,7 +16,7 @@ services:
   web:
     image: tolshin/foodgram:latest
     restart: always
-    command: bash -c "cd foodgam && python manage.py makemigrations && python manage.py migrate && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - static_volume:/code/static
       - media_volume:/code/media
