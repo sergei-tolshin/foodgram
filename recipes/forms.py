@@ -50,7 +50,7 @@ class RecipeForm(forms.ModelForm):
                     required=False, widget=forms.HiddenInput())
             if (field_name.startswith('valueIngredient_')):
                 self.fields[field_name] = forms.FloatField(
-                    required=False)
+                    required=False, widget=forms.HiddenInput())
 
     def clean(self):
         cleaned_data = super(RecipeForm, self).clean()

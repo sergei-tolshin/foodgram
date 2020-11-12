@@ -129,7 +129,7 @@
             <div class="single-card__items single-card__items_column">
                 {% for ingredient in recipe.ingredients.all %}
                 <p class=" single-card__section-item">
-                    {{ ingredient.name }} - {{ ingredient.value }} {{ ingredient.units }}
+                    {{ ingredient.name }} - {{ ingredient.value|floatformat:'-2' }} {{ ingredient.units }}
                 </p>
                 {% endfor %}
             </div>

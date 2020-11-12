@@ -83,12 +83,12 @@
                 <div class="form__field-group-ingredientes-container">
                     {% for item in form.get_ingredient_fields %}
                     <div class="form__field-item-ingredient" id="ing_{{ item.id }}">
-                        <span> {{ item.name }} - {{ item.value }}
+                        <span> {{ item.name }} - {{ item.value|floatformat:'-2' }}
                             {{ item.units }}</span> <span class="form__field-item-delete"></span>
                         <input id="nameIngredient_{{ item.id }}" name="nameIngredient_{{ item.id }}" type="hidden"
                             value="{{ item.name }}">
                         <input id="valueIngredient_{{ item.id }}" name="valueIngredient_{{ item.id }}" type="hidden"
-                            value="{{ item.value|format_float }}">
+                            value="{{ item.value|floatformat:'-2' }}">
                         <input id="unitsIngredient_{{ item.id }}" name="unitsIngredient_{{ item.id }}" type="hidden"
                             value="{{ item.units }}">
                     </div>
