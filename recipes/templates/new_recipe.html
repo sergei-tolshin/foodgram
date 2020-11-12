@@ -88,7 +88,7 @@
                         <input id="nameIngredient_{{ item.id }}" name="nameIngredient_{{ item.id }}" type="hidden"
                             value="{{ item.name }}">
                         <input id="valueIngredient_{{ item.id }}" name="valueIngredient_{{ item.id }}" type="hidden"
-                            value="{{ item.value|floatformat:'-2' }}">
+                            value="{{ item.value|format_float }}">
                         <input id="unitsIngredient_{{ item.id }}" name="unitsIngredient_{{ item.id }}" type="hidden"
                             value="{{ item.units }}">
                     </div>

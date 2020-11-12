@@ -71,3 +71,9 @@ def purchase_counter(request):
         counter = Recipe.objects.filter(pk__in=purchases).count()
 
     return counter
+
+
+@register.filter
+def format_float(value, arg=2):
+    value = floatformat(value, arg)
+    return str(value).replace(',', '.')
