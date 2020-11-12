@@ -1,4 +1,5 @@
 from django import template
+from django.template.defaultfilters import floatformat
 from recipes.models import Favorite, Purchase, Recipe
 
 register = template.Library()
@@ -70,3 +71,9 @@ def purchase_counter(request):
         counter = Recipe.objects.filter(pk__in=purchases).count()
 
     return counter
+
+
+@register.filter
+def format_float(value):
+    value = floatformat(value, arg=2)
+    return str(value).replace(',', '.')

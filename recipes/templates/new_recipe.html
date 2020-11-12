@@ -81,29 +81,16 @@
                     <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
                 </div>
                 <div class="form__field-group-ingredientes-container">
-                    {% for key, ingredient in form.get_ingredient_fields %}
-                    <div class="form__field-item-ingredient" id="ing_{{ key }}">
-                        <span> {{ ingredient.name }} - {{ ingredient.value }}
-                            {{ ingredient.units }}</span> <span class="form__field-item-delete"></span>
-                        <input id="nameIngredient_{{ key }}" name="nameIngredient_{{ key }}" type="hidden"
-                            value="{{ ingredient.name }}">
-                        <input id="valueIngredient_{{ key }}" name="valueIngredient_{{ key }}" type="hidden"
-                            value="{{ ingredient.value }}">
-                        <input id="unitsIngredient_{{ key }}" name="unitsIngredient_{{ key }}" type="hidden"
-                            value="{{ ingredient.units }}">
-                    </div>
-                    {% endfor %}
-
-                    {% for ingredient in recipe.ingredients.all %}
-                    <div class="form__field-item-ingredient" id="ing_{{ forloop.counter }}">
-                        <span> {{ ingredient.name }} - {{ ingredient.value }}
-                            {{ ingredient.units }}</span> <span class="form__field-item-delete"></span>
-                        <input id="nameIngredient_{{ forloop.counter }}" name="nameIngredient_{{ forloop.counter }}"
-                            type="hidden" value="{{ ingredient.name }}">
-                        <input id="valueIngredient_{{ forloop.counter }}" name="valueIngredient_{{ forloop.counter }}"
-                            type="hidden" value="{{ ingredient.value }}">
-                        <input id="unitsIngredient_{{ forloop.counter }}" name="unitsIngredient_{{ forloop.counter }}"
-                            type="hidden" value="{{ ingredient.units }}">
+                    {% for item in form.get_ingredient_fields %}
+                    <div class="form__field-item-ingredient" id="ing_{{ item.id }}">
+                        <span> {{ item.name }} - {{ item.value }}
+                            {{ item.units }}</span> <span class="form__field-item-delete"></span>
+                        <input id="nameIngredient_{{ item.id }}" name="nameIngredient_{{ item.id }}" type="hidden"
+                            value="{{ item.name }}">
+                        <input id="valueIngredient_{{ item.id }}" name="valueIngredient_{{ item.id }}" type="hidden"
+                            value="{{ item.value|format_float }}">
+                        <input id="unitsIngredient_{{ item.id }}" name="unitsIngredient_{{ item.id }}" type="hidden"
+                            value="{{ item.units }}">
                     </div>
                     {% endfor %}
                 </div>

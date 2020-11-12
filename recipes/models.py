@@ -82,7 +82,7 @@ class Recipe(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField('Название', max_length=200)
-    value = models.PositiveIntegerField(
+    value = models.FloatField(
         'Количество', validators=[MaxValueValidator(9999)])
     units = models.CharField('Единицы измерения', max_length=20)
     recipe = models.ForeignKey(

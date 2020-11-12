@@ -33,20 +33,24 @@ class RecipeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RecipeForm, self).__init__(*args, **kwargs)
+
         self.fields['breakfast'] = forms.BooleanField(
             required=False, initial='breakfast' in self.instance.tags)
         self.fields['lunch'] = forms.BooleanField(
             required=False, initial='lunch' in self.instance.tags)
         self.fields['dinner'] = forms.BooleanField(
             required=False, initial='dinner' in self.instance.tags)
+
         for field_name in self.data:
             if (
                 field_name.startswith('nameIngredient_')
-                or field_name.startswith('valueIngredient_')
                 or field_name.startswith('unitsIngredient_')
             ):
                 self.fields[field_name] = forms.CharField(
                     required=False, widget=forms.HiddenInput())
+            if (field_name.startswith('valueIngredient_')):
+                self.fields[field_name] = forms.FloatField(
+                    required=False)
 
     def clean(self):
         cleaned_data = super(RecipeForm, self).clean()
@@ -62,7 +66,7 @@ class RecipeForm(forms.ModelForm):
     def add_ingredients(self):
         recipe = self.instance
         recipe.ingredients.all().delete()
-        for key, ingredient in self.cleaned_data['ingredients'].items():
+        for ingredient in self.cleaned_data['ingredients']:
             Ingredient.objects.create(
                 recipe=recipe,
                 name=ingredient['name'],
@@ -71,21 +75,27 @@ class RecipeForm(forms.ModelForm):
             )
 
     def get_ingredients(self, data):
-        ingredients = dict()
+        ingredients = list()
         for key in dict(data.items()):
             if 'nameIngredient' in key:
                 ingredient_num = key.split('_')[1]
                 ingredient = {
+                    'id': ingredient_num,
                     'name': data[f'nameIngredient_{ingredient_num}'],
                     'value': data[f'valueIngredient_{ingredient_num}'],
                     'units': data[f'unitsIngredient_{ingredient_num}']
                 }
-                ingredients[ingredient_num] = ingredient
+                ingredients.append(ingredient)
         return ingredients
 
     def get_ingredient_fields(self):
         ingredients = self.get_ingredients(self.data)
-        for ingredient in ingredients.items():
+
+        if not self.errors:
+            ingredients += list(Ingredient.objects.filter(recipe=self.instance)
+                                .values())
+
+        for ingredient in ingredients:
             yield ingredient
 
     def get_tags(self):

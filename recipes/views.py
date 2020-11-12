@@ -1,4 +1,5 @@
 import io
+import reportlab
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
@@ -12,6 +13,7 @@ from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
+from django.conf import settings
 
 from .forms import RecipeForm
 from .models import Favorite, Ingredient, Recipe, Subscription
@@ -248,7 +250,9 @@ def purchases_to_pdf(request):
 
     buffer = io.BytesIO()
 
-    pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))
+    reportlab.rl_config.TTFSearchPath.append(
+        str(settings.BASE_DIR) + '/static/fonts')
+    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
     p = canvas.Canvas(buffer, pagesize=A4)
     p.setFont('Arial', 16, leading=None)
     p.drawString(10 * mm, 277 * mm, 'Список покупок')
