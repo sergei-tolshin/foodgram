@@ -1,11 +1,12 @@
 import io
-import reportlab
 from datetime import datetime
 
+import reportlab
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Q, Sum
+from django.db.models import Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from reportlab.lib.pagesizes import A4
@@ -13,32 +14,17 @@ from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-from django.conf import settings
 
 from .forms import RecipeForm
 from .models import Favorite, Ingredient, Recipe, Subscription
-from .utils import slugify
+from .utils import get_filter_tags, slugify
 
 User = get_user_model()
 
 
 def index(request):
-    # теги для фильтрации по рецептам
-    tag_breakfast = request.GET.get('breakfast')
-    tag_lunch = request.GET.get('lunch')
-    tag_dinner = request.GET.get('dinner')
-
-    # строим фильтр по тегам
-    filter_tag = Q()
-    if tag_breakfast:
-        filter_tag |= Q(tags__contains='breakfast')
-    if tag_lunch:
-        filter_tag |= Q(tags__contains='lunch')
-    if tag_dinner:
-        filter_tag |= Q(tags__contains='dinner')
-
     recipe_list = Recipe.objects.order_by('-pub_date').all()
-    recipe_list = recipe_list.filter(filter_tag)
+    recipe_list = recipe_list.filter(get_filter_tags(request))
 
     # показывать по 6 рецептов на странице
     paginator = Paginator(recipe_list, 6)
@@ -46,9 +32,6 @@ def index(request):
     page = paginator.get_page(page_number)
 
     data = {
-        'breakfast': tag_breakfast,
-        'lunch': tag_lunch,
-        'dinner': tag_dinner,
         'page': page,
         'paginator': paginator,
     }
@@ -59,22 +42,8 @@ def profile(request, username):
     subscription = False
     profile = get_object_or_404(User, username=username)
 
-    # теги для фильтрации по рецептам
-    tag_breakfast = request.GET.get('breakfast')
-    tag_lunch = request.GET.get('lunch')
-    tag_dinner = request.GET.get('dinner')
-
-    # строим фильтр по тегам
-    filter_tag = Q()
-    if tag_breakfast:
-        filter_tag |= Q(tags__contains='breakfast')
-    if tag_lunch:
-        filter_tag |= Q(tags__contains='lunch')
-    if tag_dinner:
-        filter_tag |= Q(tags__contains='dinner')
-
     recipe_list = Recipe.objects.filter(author=profile).order_by('-pub_date')
-    recipe_list = recipe_list.filter(filter_tag)
+    recipe_list = recipe_list.filter(get_filter_tags(request))
 
     paginator = Paginator(recipe_list, 6)
     page_number = request.GET.get('page')
@@ -85,9 +54,6 @@ def profile(request, username):
             user=request.user, author=profile).first()
 
     data = {
-        'breakfast': tag_breakfast,
-        'lunch': tag_lunch,
-        'dinner': tag_dinner,
         'profile': profile,
         'page': page,
         'paginator': paginator,
@@ -185,31 +151,14 @@ def subscriptions(request):
 def favorites(request):
     profile = request.user
 
-    # теги для фильтрации по рецептам
-    tag_breakfast = request.GET.get('breakfast')
-    tag_lunch = request.GET.get('lunch')
-    tag_dinner = request.GET.get('dinner')
+    favorites = profile.favorites.all().values('recipe')
+    recipe_list = Recipe.objects.filter(pk__in=favorites).order_by('-pub_date')
+    recipe_list = recipe_list.filter(get_filter_tags(request))
 
-    # строим фильтр по тегам
-    filter_tag = Q()
-    if tag_breakfast:
-        filter_tag |= Q(recipe__tags__contains='breakfast')
-    if tag_lunch:
-        filter_tag |= Q(recipe__tags__contains='lunch')
-    if tag_dinner:
-        filter_tag |= Q(recipe__tags__contains='dinner')
-
-    favorite_list = profile.favorites.all()
-    favorite_list = favorite_list.filter(
-        filter_tag).order_by('-recipe__pub_date')
-
-    paginator = Paginator(favorite_list, 6)
+    paginator = Paginator(recipe_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     data = {
-        'breakfast': tag_breakfast,
-        'lunch': tag_lunch,
-        'dinner': tag_dinner,
         'page': page,
         'paginator': paginator
     }

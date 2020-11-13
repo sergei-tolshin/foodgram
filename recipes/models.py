@@ -1,7 +1,7 @@
 import ast
 
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 User = get_user_model()
@@ -65,7 +65,8 @@ class Recipe(models.Model):
     slug = models.SlugField(unique=False, max_length=200, db_index=True)
     tags = ListField('Теги', max_length=200)
     time = models.PositiveIntegerField(
-        'Время приготовления', validators=[MaxValueValidator(999)])
+        'Время приготовления',
+        validators=[MinValueValidator(1), MaxValueValidator(999)])
     description = models.TextField('Описание')
     image = models.ImageField('Фото', upload_to='recipes/')
     pub_date = models.DateTimeField(
@@ -83,7 +84,8 @@ class Recipe(models.Model):
 class Ingredient(models.Model):
     name = models.CharField('Название', max_length=200)
     value = models.FloatField(
-        'Количество', validators=[MaxValueValidator(9999)])
+        'Количество',
+        validators=[MinValueValidator(0), MaxValueValidator(9999)])
     units = models.CharField('Единицы измерения', max_length=20)
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, verbose_name='Рецепт',

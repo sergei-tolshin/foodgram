@@ -35,8 +35,8 @@
     {% include 'tag_filter.html' with breakfast=breakfast lunch=lunch dinner=dinner%}
 </div>
 <div class="card-list">
-    {% for favorite in page %}
-    {% include 'recipe_item.html' with recipe=favorite.recipe %}
+    {% for recipe in page %}
+    {% include 'recipe_item.html' with recipe=recipe %}
     {% empty %}
     <h3 class="card__title">Тут пока пусто...</h3>
     {% endfor %}
